@@ -34,7 +34,7 @@ export async function createPost(c: Context) {
     const title   = typeof body['title'] === 'string' ? body['title'] : '';
     const content = typeof body['content'] === 'string' ? body['content'] : '';
 
-    //create post
+  
     const post = await prisma.post.create({
       data: {
         title: title,
