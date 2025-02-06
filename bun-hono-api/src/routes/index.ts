@@ -3,16 +3,43 @@ import { Hono } from 'hono';
 
 //import controller
 import { getPosts, createPost, getPostById, updatePost, deletePost } from '../controllers/PostController';
+import { basicAuth } from 'hono/basic-auth';
+import { apiKeyAuth } from '../middleware/auth';
+import prisma from '../../prisma/client';
 
 //inistialize router
-const router = new Hono()
+const app = new Hono()
 
 //routes posts index
-router.get('/', (c) => getPosts(c));
-router.post('/', (c) => createPost(c));
-router.get('/:id', (c) => getPostById(c));
-router.put('/:id', (c) => updatePost(c));
-router.patch('/:id', (c) => updatePost(c));
-router.delete('/:id', (c) => deletePost(c));
+app.use(
+  '/*',
+  basicAuth({
+    username: 'Shita',
+    password: 'sitaa',
+  })
+)
 
-export const Routes = router;
+app.get('/', async (c) => {
+  const auth = await prisma.auth.findFirst()
+
+  if (auth) {
+    return c.json(
+      {
+        success: true,
+        message: 'Authorized',
+        key: auth.key
+      }
+    )
+  }
+})
+
+app.use('*', apiKeyAuth)
+
+app.get('/data', (c) => getPosts(c));
+app.post('/data', (c) => createPost(c));
+app.get('/data/:id', (c) => getPostById(c));
+app.put('/data/:id', (c) => updatePost(c)); // Biasain pake PUT 
+app.patch('/data/:id', (c) => updatePost(c));
+app.delete('/data/:id', (c) => deletePost(c));
+
+export const Routes = app;
