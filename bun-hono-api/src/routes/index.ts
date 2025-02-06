@@ -11,6 +11,7 @@ const router = new Hono()
 router.get('/', (c) => getPosts(c));
 router.post('/', (c) => createPost(c));
 router.get('/:id', (c) => getPostById(c));
+router.put('/:id', (c) => updatePost(c));
 router.patch('/:id', (c) => updatePost(c));
 router.delete('/:id', (c) => deletePost(c));
 

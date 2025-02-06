@@ -8,6 +8,6 @@ import { Routes } from './routes'
 const app = new Hono().basePath('/api')
 
 // Posts Routes
-app.route('/posts', Routes)
+app.route('/shita', Routes)
 
 export default app
