@@ -7,7 +7,6 @@ import { basicAuth } from 'hono/basic-auth';
 import { apiKeyAuth } from '../middleware/auth';
 import prisma from '../../prisma/client';
 
-//inistialize router
 const app = new Hono()
 
 //routes posts index
