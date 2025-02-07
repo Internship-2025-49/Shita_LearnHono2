@@ -28,7 +28,7 @@ export async function createPost(c: Context) {
   try {
 
     //get body request
-    const body = await c.req.parseBody();
+    const body = await c.req.json();
 
     //check if title and content is string
     const title   = typeof body['title'] === 'string' ? body['title'] : '';
@@ -52,7 +52,6 @@ export async function createPost(c: Context) {
   } catch (e: unknown) {
     console.error(`Error creating post: ${e}`);
   }
-
 }
 
 export async function getPostById(c: Context) {
@@ -62,16 +61,18 @@ export async function getPostById(c: Context) {
       const postId = parseInt(c.req.param('id'));
 
       //get post by id
-      const post = await prisma.post.findUnique({
+      const post = await prisma.post.findMany({
           where: { id: postId },
       });
+
+      console.log('Data Post: ', post)
 
       //if post not found
       if (!post) {
           //return JSON
           return c.json({
               success: false,
-              message: 'Post Not Found!',
+              message: 'ID Post Not Found!',
           }, 404);
       }
 
@@ -94,7 +95,7 @@ export async function updatePost(c: Context) {
       const postId = parseInt(c.req.param('id'));
 
       //get body request
-      const body = await c.req.parseBody();
+      const body = await c.req.json();
 
       //check if title and content is string
       const title = typeof body['title'] === 'string' ? body['title'] : '';

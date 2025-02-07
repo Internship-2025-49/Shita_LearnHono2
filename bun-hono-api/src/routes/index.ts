@@ -11,7 +11,7 @@ const app = new Hono()
 
 //routes posts index
 app.use(
-  '/shita/*',
+  '/*',
   basicAuth({
     username: 'shita',
     password: 'sitaa',
@@ -31,18 +31,6 @@ app.get('/shita', async (c) => {
     )
   }
 })
-
-// app.use(
-//   '/admin/*',
-//   basicAuth({
-//     username: 'admin',
-//     password: 'secret',
-//   })
-// )
-
-// app.get('/admin', (c) => {
-//   return c.text('You are authorized!')
-// })
 
 app.use('*', apiKeyAuth)
 
