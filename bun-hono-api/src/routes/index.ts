@@ -11,14 +11,14 @@ const app = new Hono()
 
 //routes posts index
 app.use(
-  '/*',
+  '/shita/*',
   basicAuth({
-    username: 'Shita',
+    username: 'shita',
     password: 'sitaa',
   })
 )
 
-app.get('/', async (c) => {
+app.get('/shita', async (c) => {
   const auth = await prisma.auth.findFirst()
 
   if (auth) {
@@ -31,6 +31,18 @@ app.get('/', async (c) => {
     )
   }
 })
+
+// app.use(
+//   '/admin/*',
+//   basicAuth({
+//     username: 'admin',
+//     password: 'secret',
+//   })
+// )
+
+// app.get('/admin', (c) => {
+//   return c.text('You are authorized!')
+// })
 
 app.use('*', apiKeyAuth)
 

@@ -18,9 +18,7 @@ model Post {
 }
 
 model Auth {
-  key       String   @id @db.VarChar(255)
-  userId    Int     
-  createdAt DateTime @default(now())
+  key       String   @id 
 
   @@map("auth")
 }
