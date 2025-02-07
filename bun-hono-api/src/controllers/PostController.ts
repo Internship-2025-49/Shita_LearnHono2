@@ -44,10 +44,10 @@ export async function createPost(c: Context) {
 
     //return JSON
     return c.json({
-      success: true,
+      statusCode : 201,
       message: 'Post Created Successfully!',
       data: post
-    }, 201);
+    });
 
   } catch (e: unknown) {
     console.error(`Error creating post: ${e}`);
@@ -71,9 +71,9 @@ export async function getPostById(c: Context) {
       if (!post) {
           //return JSON
           return c.json({
-              success: false,
+              statusCode : 404,
               message: 'ID Post Not Found!',
-          }, 404);
+          });
       }
 
        //return JSON
@@ -111,10 +111,10 @@ export async function updatePost(c: Context) {
 
       //return JSON
       return c.json({
-          success: true,
+          statusCode : 200,
           message: 'Post Updated Successfully!',
           data: post
-      }, 200);
+      });
 
   } catch (e: unknown) {
       console.error(`Error updating post: ${e}`);
@@ -134,9 +134,9 @@ export async function deletePost(c: Context) {
 
       //return JSON
       return c.json({
-          success: true,
+          statusCode : 200,
           message: 'Post Deleted Successfully!',
-      }, 200);
+      });
 
   } catch (e: unknown) {
       console.error(`Error deleting post: ${e}`);
