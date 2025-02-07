@@ -106,7 +106,6 @@ export async function updatePost(c: Context) {
           data: {
               title: title,
               content: content,
-              updatedAt: new Date(),
           },
       });
 
