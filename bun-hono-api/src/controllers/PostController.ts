@@ -12,13 +12,9 @@ export const getPosts = async (c: Context) => {
         //get all posts
         const posts = await prisma.post.findMany({ orderBy: { id: 'desc' } });
 
-        const statusCode: Record<number, string> = {
-            200: 'OK'
-        };
-
         //return JSON
         return c.json({
-            status: `${200} ${statusCode[200]}`,
+            statusCode : 200,
             message: 'List Data Posts!',
             data: posts
         });
@@ -80,13 +76,9 @@ export async function getPostById(c: Context) {
           }, 404);
       }
 
-      const statusCode: Record<number, string> = {
-        200: 'OK'
-       };
-
        //return JSON
        return c.json({
-        status: `${200} ${statusCode[200]}`,
+        statusCode : 200,
         message: `Detail Data Post By ID : ${postId}`,
         data: post
         });

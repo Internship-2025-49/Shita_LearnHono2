@@ -6,31 +6,58 @@ import { getPosts, createPost, getPostById, updatePost, deletePost } from '../co
 import { basicAuth } from 'hono/basic-auth';
 import { apiKeyAuth } from '../middleware/auth';
 import prisma from '../../prisma/client';
+import { jwt } from 'hono/jwt'
+import type { JwtVariables } from 'hono/jwt'
 
-const app = new Hono()
+// const app = new Hono()
 
-//routes posts index
+// //routes posts index
+// app.use(
+//   '/*',
+//   basicAuth({
+//     username: 'shita',
+//     password: 'sitaa',
+//   })
+// )
+
+// app.get('/shita', async (c) => {
+//   const auth = await prisma.auth.findFirst()
+
+//   if (auth) {
+//     return c.json(
+//       {
+//         success: true,
+//         message: 'Authorized',
+//         key: auth.key
+//       }
+//     )
+//   }
+// })
+
+type Variables = JwtVariables
+
+const app = new Hono<{ Variables: Variables }>()
+
 app.use(
-  '/*',
-  basicAuth({
-    username: 'shita',
-    password: 'sitaa',
+  '/auth/*',
+  jwt({
+    secret: 'it-is-very-secret',
   })
 )
 
 app.get('/shita', async (c) => {
-  const auth = await prisma.auth.findFirst()
-
-  if (auth) {
-    return c.json(
-      {
-        success: true,
-        message: 'Authorized',
-        key: auth.key
-      }
-    )
-  }
-})
+    const auth = await prisma.auth.findFirst()
+  
+    if (auth) {
+      return c.json(
+        {
+          success: true,
+          message: 'Authorized',
+          key: auth.key
+        }
+      )
+    }
+  })
 
 app.use('*', apiKeyAuth)
 
