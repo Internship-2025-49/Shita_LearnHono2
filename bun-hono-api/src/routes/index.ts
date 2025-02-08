@@ -6,8 +6,11 @@ import { getPosts, createPost, getPostById, updatePost, deletePost } from '../co
 import { basicAuth } from 'hono/basic-auth';
 import { apiKeyAuth } from '../middleware/auth';
 import prisma from '../../prisma/client';
+
 import { jwt } from 'hono/jwt'
 import type { JwtVariables } from 'hono/jwt'
+
+import { cors } from 'hono/cors'
 
 // const app = new Hono()
 
@@ -38,12 +41,24 @@ type Variables = JwtVariables
 
 const app = new Hono<{ Variables: Variables }>()
 
+app.use('/abc/*', cors({
+  origin: 'http://localhost:3000',
+  allowMethods: ['GET','POST', 'PUT', 'DELETE'], 
+  allowHeaders: ["*"],
+}))
+
+app.use('/data/*', apiKeyAuth)
+
 app.use(
   '/auth/*',
   jwt({
     secret: 'it-is-very-secret',
   })
 )
+
+app.all('/abc', (c) => {
+  return c.json({ success: true })
+})
 
 app.get('/shita', async (c) => {
     const auth = await prisma.auth.findFirst()
@@ -58,8 +73,6 @@ app.get('/shita', async (c) => {
       )
     }
   })
-
-app.use('*', apiKeyAuth)
 
 app.get('/data', (c) => getPosts(c));
 app.post('/data', (c) => createPost(c));
