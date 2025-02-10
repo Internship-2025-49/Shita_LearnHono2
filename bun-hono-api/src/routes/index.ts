@@ -10,8 +10,6 @@ import prisma from '../../prisma/client';
 import { jwt } from 'hono/jwt'
 import type { JwtVariables } from 'hono/jwt'
 
-import { cors } from 'hono/cors'
-
 // const app = new Hono()
 
 // //routes posts index
@@ -41,12 +39,6 @@ type Variables = JwtVariables
 
 const app = new Hono<{ Variables: Variables }>()
 
-app.use('/abc/*', cors({
-  origin: 'http://localhost:3000',
-  allowMethods: ['GET','POST', 'PUT', 'DELETE'], 
-  allowHeaders: ["*"],
-}))
-
 app.use('/data/*', apiKeyAuth)
 
 app.use(
@@ -55,10 +47,6 @@ app.use(
     secret: 'it-is-very-secret',
   })
 )
-
-app.all('/abc', (c) => {
-  return c.json({ success: true })
-})
 
 app.get('/shita', async (c) => {
     const auth = await prisma.auth.findFirst()
