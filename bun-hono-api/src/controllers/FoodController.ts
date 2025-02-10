@@ -11,8 +11,7 @@ export const getFood = async (c: Context) => {
     try {
         //get all foods
         const food = await prisma.food.findMany({ orderBy: { id: 'desc' } });
-
-        //return JSON
+        
         return c.json({
             statusCode : 200,
             message: 'List Data Food!',
