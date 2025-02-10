@@ -44,7 +44,7 @@ app.use('/data/*', apiKeyAuth)
 app.use(
   '/auth/*',
   jwt({
-    secret: 'it-is-very-secret',
+    secret: '4bc8dacaeff0b089cc7d4c06dbc9a4128aabaa67fe72e8e1825be6b410745dc1',
   })
 )
 
